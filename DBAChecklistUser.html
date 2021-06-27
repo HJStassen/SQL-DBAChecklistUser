@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>DBA Checklist Support</title>
+</head>
+
+<body>
+    DBA Checklist
+
+    <h2 id="C00.">DBA Checklist User</h2>
+    <p>&nbsp;</p>
+
+    <h2 id="C01.">01. Security Checks</h2>
+
+    <h3 id="C01.01.">01.01. Elevated Server Rights and Roles</h3>
+    <p>Although it is better to assign security rights to an AD or server Group, and not an individual SQL user or SQL login, you need to ensure that you have regular audits to ensure that all the group members should be in the group, and should not get roles removed. It has the added benefit that once you leave the organisation, your rights are automatically "removed".</p>
+    <p>Corrective action: Review the AD group members</p>
+    <p>Be careful that you do not log yourself out of the database - one of the reasons that I do not provide a quick fix script to disable accounts - been there, done it. . </p>
+
+    <p>&nbsp;</p>
+
+    <h5 id="C01.01.01.">AD - or server group have elevated rights to the Server</h5>
+    <p>Corrective action: for each AD - or server group, review the group members.</p>
+
+    <h5 id="C01.01.02.">SQL User have elevated rights to the Server</h5>
+    <p>Corrective action: review access for the SQL User, and see if the rights cannot be assigned only when needed.</p>
+
+    <h5 id="C01.01.03.">SQL Login have elevated rights to the Server</h5>
+    <p>Corrective action: make sure all rights are still needed, and that there are no zombie accounts you have forgotten about, or accounts used during installation, that don&#39;t need the rights anymore.</p>
+
+    <p>&nbsp;</p>
+
+    <h3 id="C01.02.">01.02. Elevated Database Rights and Roles</h3>
+    <p>Sadly , this depends on your application architecture. Sometimes the application might require that some users require database ownership for application functionality such as tabel creation for imports. </p>
+    <p>Dont use it as an excuse for laziness and grant your logins or users dbo rights because you do not want to grant execute rights to stored procedures. </p>
+
+    <h5 id="C01.02.01.">AD - or server group has DBO (database owner) rights to the Database</h5>
+    <p>Review all the group members, and see if all of them should be in this group. </p>
+
+    <h5 id="C01.02.02.">SQL User has DBO (database owner) rights to the Database</h5>
+    <p>Review all the SQL users, and see if all of them should have this access. If there are a lot of them, consider creating an AD group to manage this functionality.</p>
+
+    <h5 id="C01.02.03.">SQL Login has DBO (database owner) rights to the Database</h5>
+    <p>Review all the logins. Disable accounts or remove dbo rights instead of dropping. After a period, during a cleanup process you can review all disabled accounts and decide on removals. </p>
+
+    <p>&nbsp;</p>
+
+    <h3 id="C01.03.">01.03. Database ownership</h3>
+    <p>The SA account isn&#39;t the owner of the database. </p>
+    <p>Corrective action - change the owner of the database to sa.The script is provided. On sql 2000, this is done by an &quot;alter authorisation&quot; command, and on newer versions, it is done by executing stored procedure&nbsp; dbo.sp_changedbowner.</p>
+
+    <h5 id="C01.03.02.1">&nbsp;</h5>
+    <h5 id="C01.03.01.">SQL user or login is the owner of the database</h5>
+    <p>SA isn&#39;t the owner of the database. </p>
+
+    <h5 id="C01.03.02.">Invalid SQL user or login is the owner of the database</h5>
+    <p>SA isn&#39;t the owner of the database. In this case, the owner doesnt even exist anymore.</p>
+    <h5 id="C01.03.02.0">&nbsp;</h5>
+
+    <h3 id="C01.04.">01.04. User consistency and User management</h3>
+    <p>Access to SQL server mostly works as follows: rights to conect to the server, and rights to the database. the exception is where an account has elevated server rights.Where it is a SQL Login, the unique ID&#39;s need to match up as well. you might be in the position as well where the AD- or server user does not exist anymore. (I have been involved with a few domain migrations over the years)</p>
+    <p>Corrective action mostly involves removing the said accounts (or disabling them first), recreating them , or ensuring that the unique IDs (SIDs) match up</p>
+
+    <p>&nbsp;</p>
+
+    <h5 id="C01.04.01.">AD group has connection rights to the server, but no database access</h5>
+    <p>Connection rights to the server with no database access, when you dont have elevated server rights, means you cannot do anything.</p>
+
+    <h5 id="C01.04.02.">SQL User has connection rights to the server, but no database access</h5>
+    <p>Connection rights to the server with no database access, when you dont have elevated server rights, means you cannot do anything.</p>
+
+    <h5 id="C01.04.03.">SQL Login has connection rights to the server, but no database access</h5>
+    <p>Connection rights to the server with no database access, when you dont have elevated server rights, means you cannot do anything.</p>
+
+    <h5 id="C01.04.04.">AD - or server group has database access but not server connection rights</h5>
+    <p>If you dont have connection rights to the server but you do have database access, means you cannot do anything.</p>
+
+    <h5 id="C01.04.05.">SQL User has database access but not server connection rights</h5>
+    <p>If you dont have connection rights to the server but you do have database access, means you cannot do anything. This can happen if you restore a database on another server so the database rights stay intact, but no server permission was granted.</p>
+
+    <h5 id="C01.04.06.">SQL Login has database access but not server connection rights</h5>
+    <p>If you dont have connection rights to the server but you do have database access, means you cannot do anything. This can happen if you restore a database on another server so the database rights stay intact, but no server permission was granted.</p>
+
+    <h5 id="C01.04.07.">SQL Login SID different between database and server</h5>
+    <p>If you dont have connection rights to the server but you do have database access, means you cannot do anything. This can happen if you restore a database on another server so the database rights stay intact, but no server permission was granted.</p>
+    <p>Corrective action - exec SP_Change_users_login with the auto_fix parameter</p>
+
+    <h5 id="C01.04.08.">AD - or server group Non-Native Domain Access</h5>
+    <p>This can happen if you went through a few domain migrations. This check is only performed if you specify your current / native domain. </p>
+    <p>Corrective action - groups are first disabled, then access revoked.</p>
+
+    <h5 id="C01.04.09.">SQL User Non-Native Domain Access</h5>
+    <p>This can happen if you went through a few domain migrations. This check is only performed if you specify your current / native domain.</p>
+    <p>Corrective action - accounts are first disabled, then access revoked.</p>
+
+    <p>&nbsp;    </p>
+
+    <h3 id="C01.05.">01.05. Object Ownership</h3>
+    <p>This is where some work in future will be done. I have picked up invalid users in the past, but they own objects, so you cannot remove them. This section will be used to address that.</p>
+    <p>&nbsp;</p>
+
+    <h3 id="C01.06.">01.06. Check back to AD</h3>
+    <p>This section tries to get the domain infor for an account, and if it fails, it is an invalid account. it might be an AD grou that doesnt exist anymore, or an AD account that was deleted, because the employee left the company. </p>
+    <p>For now, until I can put in more work in here, I wont insert the disable and revooke access scripts. </p>
+
+    <h5 id="C01.06.01.">AD group does not exist in AD</h5>
+
+    <h5 id="C01.06.02.">SQL User does not exist in AD</h5>
+
+    <p>&nbsp;</p>
+
+    <h3 id="C01.07.">01.07. Service accounts</h3>
+
+    <p>For information only. Please note that you have to execute the stored procedure on each node, in a clustered environment. </p>
+
+</body>
+</html>

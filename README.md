@@ -23,7 +23,7 @@
     I have capped it at SQL 2000, and you will need to exclude some stuff for it to work on SQL2000. I dont have a SQL 2000 instance at home anymore, so if you want it to work on SQL server 2000, just exclude the valid AD account checks, and the registry checks. 
     </p>
   <p>
-    I have leaped and jumped in the past, sometimes locking me out of SQL. (removing builtin\administrators from sysadmin, oops) Take care and review the suggested scripts before you run them. This is in the realm of stuff where you cannot take a proper backup - err on the dise of caution. Save the results to an excel sheet if you have to 
+    I have leaped and jumped in the past, sometimes locking me out of SQL. (removing builtin\administrators from sysadmin, oops) Take care and review the suggested scripts before you run them. This is in the realm of stuff where you cannot take a proper backup - err on the side of caution. Save the results to an excel sheet if you have to 
     </p>
   <p>
    Feel free to connect with me on Linkedin and mention that you found this useful. https://www.linkedin.com/in/hentiestassen/<br />That will motivate me to put in more effort on this.</p>

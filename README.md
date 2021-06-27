@@ -1,7 +1,7 @@
 # SQL-DBAChecklistUser
-SQL server checks on users
+ <p>SQL server checks on users </p>
 
-Some SQL checks of mine (wrapped together in a stored procedure) to do various SQL Server user security and consistency checks:
+ <p>Some SQL checks of mine (wrapped together in a stored procedure) to do various SQL Server user security and consistency checks: </p>
 <ul>
   <li>Elevated server rights(AD or server group, SQL User, SQL Login)</li>
   <li>Elevated Database rights(AD or server group, SQL User, SQL Login)</li>
@@ -12,7 +12,8 @@ Some SQL checks of mine (wrapped together in a stored procedure) to do various S
   <li>None-native domain access (AD or server group, SQL User)</li>
   <li>Check back to AD if exists ((AD or server group, SQL User)</li>
   <li>for information - accounts the various services runs under. </li>
-<ul>
+</ul>
+
   <p> 
    The project started off many years ago at home when I was trying to resolve user inconsistencies between SQL database access. Every time as i hit a snag at home, or work, I would edit it. One day I hit the sp_blitz routimes of Bbrent Ozar, I realised that it might be a nice format to display the results. this is definitely a work in progress - I only work on it when i have to resolve an issue. Nothing fancy, it just works for me. Maybe it will work for you. If there is a need for it, I will amend the documentation. If you are half a DBA, like me, the stuff will make sense anyway. 
   </p>
@@ -24,3 +25,5 @@ Some SQL checks of mine (wrapped together in a stored procedure) to do various S
   <p>
     I have leaped and jumped in the past, sometimes locking me out of SQL. (removing builtin\administrators from sysadmin, oops) Take care and review the suggested scripts before you run them. This is in the realm of stuff where you cannot take a proper backup - err on the dise of caution. Save the results to an excel sheet if you have to 
     </p>
+  <p>
+   Feel free to connect with me on Linkedin and mention that you found this useful. https://www.linkedin.com/in/hentiestassen/<br />That will motivate me to put in more effort on this.</p>
